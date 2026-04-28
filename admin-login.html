@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - Kirish</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #0d3320 0%, #1a5c35 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .login-container {
+    background: #fff;
+    border-radius: 14px;
+    padding: 3rem 2.5rem;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    border: 3px solid #e8a020;
+  }
+  .login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .login-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: #0d2818;
+    margin-bottom: 0.5rem;
+  }
+  .login-header p {
+    color: #5a7a65;
+    font-size: 0.9rem;
+  }
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 5px;
+  }
+  .form-group input {
+    width: 100%;
+    border: 1px solid #e0ddd5;
+    border-radius: 7px;
+    padding: 0.75rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    background: #faf9f7;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-group input:focus {
+    border-color: #1a5c35;
+  }
+  .btn-login {
+    width: 100%;
+    background: #1a5c35;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 0.5rem;
+  }
+  .btn-login:hover {
+    background: #0d3320;
+  }
+  .error-msg {
+    background: #fcebeb;
+    color: #a32d2d;
+    padding: 0.75rem;
+    border-radius: 7px;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    display: none;
+    text-align: center;
+  }
+  .back-link {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+  .back-link a {
+    color: #1a5c35;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <div class="login-header">
+    <h1>🔐 Admin Panel</h1>
+    <p>Kutubxona boshqaruv tizimi</p>
+  </div>
+  
+  <div class="error-msg" id="errorMsg">
+    Login yoki parol noto'g'ri!
+  </div>
+
+  <form onsubmit="return login()">
+    <div class="form-group">
+      <label>Login</label>
+      <input type="text" id="username" placeholder="Loginingizni kiriting" required>
+    </div>
+    <div class="form-group">
+      <label>Parol</label>
+      <input type="password" id="password" placeholder="Parolingizni kiriting" required>
+    </div>
+    <button type="submit" class="btn-login">Kirish</button>
+  </form>
+
+  <div class="back-link">
+    <a href="index.html">← Kutubxonaga qaytish</a>
+  </div>
+</div>
+
+<script>
+function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const errorMsg = document.getElementById('errorMsg');
+
+  if (username === 'admin' && password === 'admin123') {
+    sessionStorage.setItem('adminLoggedIn', 'true');
+    window.location.href = 'admin.html';
+    return false;
+  } else {
+    errorMsg.style.display = 'block';
+    setTimeout(() => {
+      errorMsg.style.display = 'none';
+    }, 3000);
+    return false;
+  }
+}
+</script>
+
+</body>
+</html>

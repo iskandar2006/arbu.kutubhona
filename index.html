@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abu Rayhon Beruniy Universiteti Kutubxonasi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0d2818;
+  --ink-soft: #1a3d28;
+  --ink-muted: #5a7a65;
+  --parchment: #f7fbf8;
+  --cream: #eef6f0;
+  --warm-border: #c5dbc9;
+  --gold: #e8a020;
+  --gold-light: #fdf0d0;
+  --gold-dark: #b87c10;
+  --green: #1a5c35;
+  --green-dark: #0d3320;
+  --green-light: #e6f4ea;
+  --section-yurisprudensiya: #1a5c35;
+  --section-yurisprudensiya-bg: #e6f4ea;
+  --section-iqtisodiyot: #1a4a6b;
+  --section-iqtisodiyot-bg: #e6f0f8;
+  --section-tarix: #5a3a80;
+  --section-tarix-bg: #f2eefa;
+  --section-osimliklar: #2d8a4e;
+  --section-osimliklar-bg: #e8f5ec;
+  --section-psixologiya: #8b4513;
+  --section-psixologiya-bg: #faf0e6;
+  --sidebar-w: 240px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ─── NAV ─── */
+.topbar {
+  background: var(--green);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--gold);
+}
+.topbar-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.topbar-logo img {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+}
+.topbar-logo .logo-text { display: flex; flex-direction: column; gap: 1px; }
+.topbar-logo .logo-main { font-size: 1rem; font-weight: 600; color: #fff; line-height: 1; }
+.topbar-logo .logo-sub  { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.08em; font-family: 'DM Sans', sans-serif; }
+.topbar-nav { display: flex; gap: 4px; }
+.topbar-nav button {
+  background: none; border: none;
+  color: rgba(255,255,255,0.7);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.topbar-nav button:hover { background: rgba(255,255,255,0.15); color: #fff; }
+.topbar-nav button.active { background: var(--gold); color: var(--green-dark); font-weight: 500; }
+
+/* ─── PAGES ─── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ─── LIBRARY PAGE ─── */
+.library-layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--parchment);
+  border-right: 1px solid var(--warm-border);
+  padding: 1.5rem 0;
+  flex-shrink: 0;
+  position: sticky;
+  top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+.sidebar-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding: 0 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0.55rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  border-left: 3px solid transparent;
+}
+.sidebar-item:hover { background: var(--cream); }
+.sidebar-item.active {
+  background: var(--cream);
+  border-left-color: var(--green);
+  color: var(--ink);
+  font-weight: 500;
+}
+.sidebar-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.sidebar-divider {
+  height: 1px; background: var(--warm-border);
+  margin: 1rem 1.25rem;
+}
+
+/* ─── MAIN CONTENT ─── */
+.main {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  overflow-y: auto;
+}
+
+/* ─── HERO ─── */
+.hero {
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+  color: #fff;
+  border-radius: 14px;
+  padding: 2.5rem 3rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(232,160,32,0.3);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  right: -50px; top: -50px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  border: 50px solid rgba(232,160,32,0.12);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  left: -20px; bottom: -60px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 30px solid rgba(232,160,32,0.08);
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+.hero-sub {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.9rem;
+}
+.hero-stats {
+  display: flex; gap: 2rem; flex-shrink: 0;
+}
+.hero-stat { text-align: center; }
+.hero-stat .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--gold);
+  display: block;
+}
+.hero-stat .lbl {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ─── SEARCH ─── */
+.search-bar {
+  display: flex; gap: 10px;
+  margin-bottom: 2rem;
+}
+.search-bar input {
+  flex: 1;
+  border: 1px solid var(--warm-border);
+  background: var(--parchment);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-bar input:focus { border-color: var(--green); }
+.search-bar select {
+  border: 1px solid var(--warm-border);
+  background: var(--parchment);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  outline: none;
+  cursor: pointer;
+}
+.btn-search {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 1.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-search:hover { background: var(--green-dark); }
+
+/* ─── SECTION HEADING ─── */
+.section-heading {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 1.25rem;
+}
+.section-heading h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.section-badge {
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* ─── BOOK GRID ─── */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+.book-card {
+  background: var(--parchment);
+  border: 1px solid var(--warm-border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.book-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+.book-cover {
+  height: 120px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 0.75rem;
+  line-height: 1.4;
+  color: #fff;
+  position: relative;
+}
+.book-cover::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.15);
+}
+.book-cover span { position: relative; z-index: 1; }
+.book-info {
+  padding: 0.75rem;
+  border-top: 1px solid var(--warm-border);
+}
+.book-title {
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 3px;
+  color: var(--ink);
+}
+.book-author {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+.book-status {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  font-weight: 500;
+}
+.status-available { background: var(--section-yurisprudensiya-bg); color: var(--section-yurisprudensiya); }
+.status-checked { background: #fdf0d0; color: #b87c10; }
+
+/* ─── SECTIONS overview ─── */
+.sections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.section-card {
+  border-radius: 10px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.section-card:hover { opacity: 0.85; }
+.section-card-icon {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+.section-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+.section-card-count {
+  font-size: 0.78rem;
+  opacity: 0.7;
+}
+
+/* ─── BUTTONS ─── */
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--warm-border);
+  background: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  margin-right: 4px;
+}
+.btn-sm:hover { background: var(--cream); }
+.btn-sm.danger { border-color: #f09595; color: #a32d2d; }
+.btn-sm.danger:hover { background: #fcebeb; }
+.btn-sm.primary { background: var(--green); color: #fff; border-color: var(--green); }
+.btn-sm.primary:hover { background: var(--green-dark); }
+
+/* ─── NOTIFICATION ─── */
+.toast {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  background: var(--green-dark);
+  color: #fff;
+  border-left: 4px solid var(--gold);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.25s;
+  z-index: 999;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 833px) {
+  .library-layout,
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .sidebar,
+  .admin-sidebar {
+    width: 100%;
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--warm-border);
+  }
+
+  .admin-sidebar {
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .main,
+  .admin-main {
+    padding: 1.5rem 1rem;
+  }
+
+  .hero {
+    flex-direction: column;
+    padding: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .hero-stats {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .sections-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  .topbar {
+    padding: 0 1rem;
+  }
+
+  .topbar-logo .logo-text {
+    display: none;
+  }
+
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .search-bar select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .book-cover {
+    height: 100px;
+  }
+
+  .hero-title {
+    font-size: 1.5rem;
+  }
+
+  .hero-stat .num {
+    font-size: 1.5rem;
+  }
+
+  .sections-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-logo">
+    <img src="img/logo orqa foni yoq.png" alt="ARBU Logo">
+    <div class="logo-text">
+      <span class="logo-main">Abu Rayhon Beruniy Universiteti</span>
+      <span class="logo-sub">ARBU · KUTUBXONA · 2026</span>
+    </div>
+  </div>
+  <div class="topbar-nav">
+    <button class="active" onclick="showPage('library')">Kutubxona</button>
+    <!-- <button onclick="window.location.href='admin-login.html'"></button> -->
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════ LIBRARY PAGE ═══════════ -->
+<div id="page-library" class="page active">
+  <div class="library-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-label">Ko'rish</div>
+      <div class="sidebar-item active" onclick="filterBooks('all', this)">
+        <span class="sidebar-dot" style="background:#888"></span> Barcha Kitoblar
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Yo'nalishlar</div>
+      <div class="sidebar-item" onclick="filterBooks('yurisprudensiya', this)">
+        <span class="sidebar-dot" style="background:#1a5c35"></span> Yurisprudensiya
+      </div>
+      <div class="sidebar-item" onclick="filterBooks('iqtisodiyot', this)">
+        <span class="sidebar-dot" style="background:#1a4a6b"></span> Iqtisodiyot
+      </div>
+      <div class="sidebar-item" onclick="filterBooks('tarix', this)">
+        <span class="sidebar-dot" style="background:#5a3a80"></span> Tarix
+      </div>
+      <div class="sidebar-item" onclick="filterBooks('osimliklar', this)">
+        <span class="sidebar-dot" style="background:#2d8a4e"></span> O'simliklar Himoyasi va Karantini
+      </div>
+      <div class="sidebar-item" onclick="filterBooks('psixologiya', this)">
+        <span class="sidebar-dot" style="background:#8b4513"></span> Psixologiya
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Holat</div>
+      <div class="sidebar-item" onclick="filterBooks('available', this)">
+        <span class="sidebar-dot" style="background:#2d6a3f"></span> Mavjud
+      </div>
+      <div class="sidebar-item" onclick="filterBooks('checked', this)">
+        <span class="sidebar-dot" style="background:#b8922a"></span> Topshirilgan
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+      <div class="hero">
+        <div>
+          <div class="hero-title">ARBU Kutubxonasi<br><span style="font-style:italic;font-size:1.5rem;color:rgba(255,255,255,0.75)">Abu Rayhon Beruniy Universiteti Kutubxonasi</span></div>
+          <div class="hero-sub">5 ta yo'nalish bo'yicha 142+ jildni o'rganing</div>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><span class="num">142</span><span class="lbl">Jami Kitoblar</span></div>
+          <div class="hero-stat"><span class="num">118</span><span class="lbl">Mavjud</span></div>
+          <div class="hero-stat"><span class="num">5</span><span class="lbl">Yo'nalishlar</span></div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Nomi, muallifi yoki kalit so'z bo'yicha qidirish…" oninput="liveSearch()">
+        <select id="sectionFilter" onchange="liveSearch()">
+          <option value="">Barcha Yo'nalishlar</option>
+          <option value="yurisprudensiya">Yurisprudensiya</option>
+          <option value="iqtisodiyot">Iqtisodiyot</option>
+          <option value="tarix">Tarix</option>
+          <option value="osimliklar">O'simliklar Himoyasi va Karantini</option>
+          <option value="psixologiya">Psixologiya</option>
+        </select>
+        <button class="btn-search" onclick="liveSearch()">Qidirish</button>
+      </div>
+
+      <!-- Sections Overview (shown by default) -->
+      <div id="sections-overview">
+        <div class="section-heading">
+          <h2>Yo'nalishlar</h2>
+        </div>
+        <div class="sections-grid">
+          <div class="section-card" style="background:#e6f4ea;color:#1a5c35;border:1px solid rgba(26,92,53,0.15)" onclick="filterBooks('yurisprudensiya', null)">
+            <div class="section-card-icon">⚖️</div>
+            <div class="section-card-title">Yurisprudensiya</div>
+            <div class="section-card-count">28 ta kitob</div>
+          </div>
+          <div class="section-card" style="background:#e6f0f8;color:#1a4a6b;border:1px solid rgba(26,74,107,0.15)" onclick="filterBooks('iqtisodiyot', null)">
+            <div class="section-card-icon">💰</div>
+            <div class="section-card-title">Iqtisodiyot</div>
+            <div class="section-card-count">31 ta kitob</div>
+          </div>
+          <div class="section-card" style="background:#f2eefa;color:#5a3a80;border:1px solid rgba(90,58,128,0.15)" onclick="filterBooks('tarix', null)">
+            <div class="section-card-icon">🏛️</div>
+            <div class="section-card-title">Tarix</div>
+            <div class="section-card-count">29 ta kitob</div>
+          </div>
+          <div class="section-card" style="background:#e8f5ec;color:#2d8a4e;border:1px solid rgba(45,138,78,0.15)" onclick="filterBooks('osimliklar', null)">
+            <div class="section-card-icon">🌱</div>
+            <div class="section-card-title">O'simliklar Himoyasi va Karantini</div>
+            <div class="section-card-count">26 ta kitob</div>
+          </div>
+          <div class="section-card" style="background:#faf0e6;color:#8b4513;border:1px solid rgba(139,69,19,0.15)" onclick="filterBooks('psixologiya', null)">
+            <div class="section-card-icon">🧠</div>
+            <div class="section-card-title">Psixologiya</div>
+            <div class="section-card-count">28 ta kitob</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book results -->
+      <div id="current-section-heading" class="section-heading" style="display:none">
+        <h2 id="section-title">Barcha Kitoblar</h2>
+        <span class="section-badge" id="section-badge-count"></span>
+      </div>
+      <div class="books-grid" id="books-grid"></div>
+    </main>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - Boshqaruv</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <div class="topbar-logo">
+    <img src="/mnt/user-data/uploads/orqa_fom_yo_logo.jpg" alt="ARBU Logo">
+    <div class="logo-text">
+      <span class="logo-main">Admin Panel</span>
+      <span class="logo-sub">ARBU · KUTUBXONA</span>
+    </div>
+  </div>
+  <div class="topbar-nav">
+    <button onclick="window.location.href='index.html'">Kutubxona</button>
+    <button onclick="logout()" style="background:#a32d2d;color:#fff;border-radius:6px;padding:6px 14px">Chiqish</button>
+  </div>
+</nav>
+
+<!-- ADMIN PAGE -->
+<div class="admin-layout">
+
+  <!-- Admin sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-title">Boshqaruv Paneli</div>
+    <div class="admin-nav-item active" onclick="showAdminSub('dashboard', this)">
+      <span class="admin-nav-icon">📊</span> Bosh Sahifa
+    </div>
+    <div class="admin-nav-item" onclick="showAdminSub('books', this)">
+      <span class="admin-nav-icon">📚</span> Kitoblarni Boshqarish
+    </div>
+    <div class="admin-nav-item" onclick="showAdminSub('add', this)">
+      <span class="admin-nav-icon">➕</span> Yangi Kitob Qo'shish
+    </div>
+  </aside>
+
+  <!-- Admin main -->
+  <main class="admin-main">
+
+    <!-- Dashboard -->
+    <div id="admin-dashboard" class="admin-sub active">
+      <div class="admin-page-title">📊 Bosh Sahifa</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Jami Kitoblar</div>
+          <div class="stat-number" id="adm-total">10</div>
+          <div class="stat-sub">↑ Bu oy qo'shilgan</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Mavjud</div>
+          <div class="stat-number" id="adm-avail">10</div>
+          <div class="stat-sub" style="color:#2d6a3f">100% mavjudlik</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Topshirilgan</div>
+          <div class="stat-number" id="adm-out">0</div>
+          <div class="stat-sub" style="color:#7a4a1a">0 kechiktirilgan</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Yo'nalishlar</div>
+          <div class="stat-number">5</div>
+          <div class="stat-sub">Barcha yo'nalishlar</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manage Books -->
+    <div id="admin-books" class="admin-sub">
+      <div class="admin-page-title">📚 Kitoblarni Boshqarish</div>
+      <div class="admin-panel">
+        <div class="admin-panel-header">
+          <div class="admin-panel-title">Barcha Kitoblar</div>
+          <input type="text" id="admin-search" placeholder="Kitoblarni filtrlash…" style="border:1px solid #e0ddd5;border-radius:6px;padding:5px 10px;font-size:0.82rem;background:#faf9f7;outline:none" oninput="filterAdminBooks()">
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr><th>Nomi</th><th>Muallif</th><th>Yo'nalish</th><th>ISBN</th><th>Holat</th><th>Amallar</th></tr>
+          </thead>
+          <tbody id="admin-books-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add Book -->
+    <div id="admin-add" class="admin-sub">
+      <div class="admin-page-title">➕ Yangi Kitob Qo'shish</div>
+      <div class="admin-panel">
+        <div class="admin-panel-header"><div class="admin-panel-title">Kitob Ma'lumotlari</div></div>
+        <div class="add-book-form">
+          <div class="form-group">
+            <label>Nomi</label>
+            <input type="text" id="new-title" placeholder="Kitob nomi">
+          </div>
+          <div class="form-group">
+            <label>Muallif</label>
+            <input type="text" id="new-author" placeholder="Muallif ismi">
+          </div>
+          <div class="form-group">
+            <label>Yo'nalish</label>
+            <select id="new-section">
+              <option value="yurisprudensiya">Yurisprudensiya</option>
+              <option value="iqtisodiyot">Iqtisodiyot</option>
+              <option value="tarix">Tarix</option>
+              <option value="osimliklar">O'simliklar Himoyasi va Karantini</option>
+              <option value="psixologiya">Psixologiya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>ISBN</label>
+            <input type="text" id="new-isbn" placeholder="978-X-XXX-XXXXX-X">
+          </div>
+          <div class="form-group">
+            <label>Yil</label>
+            <input type="text" id="new-year" placeholder="Nashr yili">
+          </div>
+          <div class="form-group">
+            <label>Nusxalar</label>
+            <input type="number" id="new-copies" value="1" min="1">
+          </div>
+          <div class="form-group form-full">
+            <label>Kitob Fayli (PDF)</label>
+            <input type="file" id="new-file" accept=".pdf,.doc,.docx" style="padding: 0.4rem 0.85rem;">
+          </div>
+          <div class="form-group form-full">
+            <label>Kitob Muqovasi Rasmi</label>
+            <input type="file" id="new-image" accept="image/*" style="padding: 0.4rem 0.85rem;">
+          </div>
+          <div class="form-actions">
+            <button class="btn-sm" onclick="clearForm()">Tozalash</button>
+            <button class="btn-sm primary" onclick="addBook()">Kitob Qo'shish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="admin-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+:root {
+  --ink: #0d2818;
+  --ink-soft: #1a3d28;
+  --ink-muted: #5a7a65;
+  --parchment: #f7fbf8;
+  --cream: #eef6f0;
+  --warm-border: #c5dbc9;
+  --gold: #e8a020;
+  --gold-light: #fdf0d0;
+  --gold-dark: #b87c10;
+  --green: #1a5c35;
+  --green-dark: #0d3320;
+  --green-light: #e6f4ea;
+  --section-yurisprudensiya: #1a5c35;
+  --section-yurisprudensiya-bg: #e6f4ea;
+  --section-iqtisodiyot: #1a4a6b;
+  --section-iqtisodiyot-bg: #e6f0f8;
+  --section-tarix: #5a3a80;
+  --section-tarix-bg: #f2eefa;
+  --section-osimliklar: #2d8a4e;
+  --section-osimliklar-bg: #e8f5ec;
+  --section-psixologiya: #8b4513;
+  --section-psixologiya-bg: #faf0e6;
+  --sidebar-w: 240px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ─── NAV ─── */
+.topbar {
+  background: var(--green);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--gold);
+}
+.topbar-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.topbar-logo img {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold);
+}
+.topbar-logo .logo-text { display: flex; flex-direction: column; gap: 1px; }
+.topbar-logo .logo-main { font-size: 1rem; font-weight: 600; color: #fff; line-height: 1; }
+.topbar-logo .logo-sub  { font-size: 0.7rem; color: var(--gold); letter-spacing: 0.08em; font-family: 'DM Sans', sans-serif; }
+.topbar-nav { display: flex; gap: 4px; }
+.topbar-nav button {
+  background: none; border: none;
+  color: rgba(255,255,255,0.7);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.topbar-nav button:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+/* ─── ADMIN LAYOUT ─── */
+.admin-layout {
+  display: flex;
+  min-height: calc(100vh - 64px);
+}
+.admin-sidebar {
+  width: var(--sidebar-w);
+  background: var(--green-dark);
+  color: #fff;
+  padding: 1.5rem 0;
+  flex-shrink: 0;
+  border-right: 3px solid var(--gold);
+}
+.admin-sidebar-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  padding: 0 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.admin-nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0.6rem 1.25rem;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.admin-nav-item:hover { color: #fff; background: rgba(255,255,255,0.06); }
+.admin-nav-item.active { color: #fff; border-left-color: var(--gold); background: rgba(232,160,32,0.12); }
+.admin-nav-icon { font-size: 1rem; width: 18px; text-align: center; }
+
+.admin-main {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  background: var(--cream);
+  overflow-y: auto;
+}
+.admin-page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 10px;
+}
+
+/* ─── ADMIN SUB-PAGES ─── */
+.admin-sub { display: none; }
+.admin-sub.active { display: block; }
+
+/* ─── STATS ─── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: #fff;
+  border: 1px solid #e0ddd5;
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+.stat-label {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
+}
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--ink);
+  line-height: 1;
+}
+.stat-sub {
+  font-size: 0.75rem;
+  color: #2d6a3f;
+  margin-top: 4px;
+}
+
+/* ─── ADMIN PANEL ─── */
+.admin-panel {
+  background: #fff;
+  border: 1px solid #e0ddd5;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.admin-panel-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e0ddd5;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.admin-panel-title {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+table.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.admin-table th {
+  background: #f9f8f5;
+  text-align: left;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #888;
+  font-weight: 500;
+  border-bottom: 1px solid #e0ddd5;
+}
+.admin-table td {
+  padding: 0.7rem 1.25rem;
+  border-bottom: 1px solid #f0ede6;
+  color: var(--ink-soft);
+}
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: #faf9f7; }
+
+/* ─── BUTTONS ─── */
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--warm-border);
+  background: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  margin-right: 4px;
+}
+.btn-sm:hover { background: var(--cream); }
+.btn-sm.danger { border-color: #f09595; color: #a32d2d; }
+.btn-sm.danger:hover { background: #fcebeb; }
+.btn-sm.primary { background: var(--green); color: #fff; border-color: var(--green); }
+.btn-sm.primary:hover { background: var(--green-dark); }
+
+/* ─── FORM ─── */
+.add-book-form {
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.form-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  border: 1px solid #e0ddd5;
+  border-radius: 7px;
+  padding: 0.55rem 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  background: #faf9f7;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.form-group input:focus, .form-group select:focus { border-color: var(--green); }
+.form-full { grid-column: span 2; }
+.form-actions { grid-column: span 2; display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ─── TAGS ─── */
+.tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.tag-yurisprudensiya { background: var(--section-yurisprudensiya-bg); color: var(--section-yurisprudensiya); }
+.tag-iqtisodiyot { background: var(--section-iqtisodiyot-bg); color: var(--section-iqtisodiyot); }
+.tag-tarix { background: var(--section-tarix-bg); color: var(--section-tarix); }
+.tag-osimliklar { background: var(--section-osimliklar-bg); color: var(--section-osimliklar); }
+.tag-psixologiya { background: var(--section-psixologiya-bg); color: var(--section-psixologiya); }
+
+/* ─── NOTIFICATION ─── */
+.toast {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  background: var(--green-dark);
+  color: #fff;
+  border-left: 4px solid var(--gold);
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.25s;
+  z-index: 999;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ─── STATUS ─── */
+.book-status {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  font-weight: 500;
+}
+.status-available { background: var(--section-yurisprudensiya-bg); color: var(--section-yurisprudensiya); }
+.status-checked { background: #fdf0d0; color: #b87c10; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 833px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .admin-main {
+    padding: 1.5rem 1rem;
+  }
+
+  .add-book-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-full {
+    grid-column: span 1;
+  }
+
+  .form-actions {
+    grid-column: span 1;
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-table {
+    font-size: 0.75rem;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .topbar {
+    padding: 0 1rem;
+  }
+
+  .topbar-logo .logo-text {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-page-title {
+    font-size: 1.2rem;
+  }
+}
