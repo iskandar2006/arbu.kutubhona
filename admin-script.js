@@ -3,12 +3,12 @@ if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
   window.location.href = 'admin-login.html';
 }
 
-const sectionMeta = {
-  yurisprudensiya: { label: 'Yurisprudensiya', color: '#1a5c35', bg: '#1a5c35' },
-  iqtisodiyot: { label: 'Iqtisodiyot', color: '#1a4a6b', bg: '#1a4a6b' },
-  tarix: { label: 'Tarix', color: '#5a3a80', bg: '#5a3a80' },
-  osimliklar: { label: "O'simliklar Himoyasi va Karantini", color: '#2d8a4e', bg: '#2d8a4e' },
-  psixologiya: { label: 'Psixologiya', color: '#8b4513', bg: '#8b4513' },
+let sectionMeta = JSON.parse(localStorage.getItem('librarySectionMeta')) || {
+  yurisprudensiya: { label: 'Yurisprudensiya', icon: '⚖️', color: '#1a5c35', bg: '#1a5c35' },
+  iqtisodiyot: { label: 'Iqtisodiyot', icon: '📈', color: '#1a4a6b', bg: '#1a4a6b' },
+  tarix: { label: 'Tarix', icon: '📜', color: '#5a3a80', bg: '#5a3a80' },
+  osimliklar: { label: "O'simliklar Himoyasi va Karantini", icon: '🌿', color: '#2d8a4e', bg: '#2d8a4e' },
+  psixologiya: { label: 'Psixologiya', icon: '🧠', color: '#8b4513', bg: '#8b4513' },
 };
 
 // Load books from localStorage or use default
@@ -202,6 +202,121 @@ function logout() {
   window.location.href = 'admin-login.html';
 }
 
+// Category Management Functions
+let editingCategoryKey = null;
+
+function saveSectionMeta() {
+  localStorage.setItem('librarySectionMeta', JSON.stringify(sectionMeta));
+}
+
+function renderCategories() {
+  const tbody = document.getElementById('admin-categories-tbody');
+  const categoryKeys = Object.keys(sectionMeta);
+  
+  tbody.innerHTML = categoryKeys.map(key => {
+    const cat = sectionMeta[key];
+    const booksCount = books.filter(b => b.section === key).length;
+    return `<tr>
+      <td>${cat.label}</td>
+      <td style="font-size:1.2rem;text-align:center">${cat.icon}</td>
+      <td>${booksCount} ta</td>
+      <td>
+        <button class="btn-sm" onclick="editCategory('${key}')" style="font-size:0.75rem">Tahrirlash</button>
+        <button class="btn-sm danger" onclick="deleteCategory('${key}')" style="font-size:0.75rem">O'chirish</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function showAddCategoryForm() {
+  editingCategoryKey = null;
+  document.getElementById('cat-name').value = '';
+  document.getElementById('cat-icon').value = '';
+  document.getElementById('save-cat-btn').textContent = 'Saqlash';
+  document.getElementById('category-form-panel').style.display = 'block';
+  document.getElementById('cat-name').focus();
+}
+
+function editCategory(key) {
+  editingCategoryKey = key;
+  const cat = sectionMeta[key];
+  document.getElementById('cat-name').value = cat.label;
+  document.getElementById('cat-icon').value = cat.icon;
+  document.getElementById('save-cat-btn').textContent = 'O\'zgartirishni Saqlash';
+  document.getElementById('category-form-panel').style.display = 'block';
+  document.getElementById('cat-name').focus();
+}
+
+function hideCategoryForm() {
+  document.getElementById('category-form-panel').style.display = 'none';
+  editingCategoryKey = null;
+}
+
+function saveCategoryForm() {
+  const name = document.getElementById('cat-name').value.trim();
+  const icon = document.getElementById('cat-icon').value.trim();
+  
+  if (!name) { toast('Yo\'nalish nomini kiriting'); return; }
+  if (!icon) { toast('Ikonka kiriting'); return; }
+  
+  if (editingCategoryKey) {
+    // Edit existing category
+    sectionMeta[editingCategoryKey].label = name;
+    sectionMeta[editingCategoryKey].icon = icon;
+    toast(`"${name}" o'zgartirildi`);
+  } else {
+    // Add new category - generate key from name
+    const newKey = name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+    if (sectionMeta[newKey]) { 
+      toast('Bu nomda yo\'nalish allaqachon mavjud'); 
+      return; 
+    }
+    sectionMeta[newKey] = {
+      label: name,
+      icon: icon,
+      color: '#666666',
+      bg: '#f0f0f0'
+    };
+    toast(`"${name}" qo'shildi`);
+    // Update the select dropdown in add book form
+    updateCategorySelect();
+  }
+  
+  saveSectionMeta();
+  renderCategories();
+  hideCategoryForm();
+}
+
+function deleteCategory(key) {
+  const cat = sectionMeta[key];
+  const booksInCategory = books.filter(b => b.section === key).length;
+  
+  if (booksInCategory > 0) {
+    toast(`Bu yo'nalishda ${booksInCategory} ta kitob bor. Avval kitoblarni o'chiringiz yoki boshqa yo'nalishga ko'chiring.`);
+    return;
+  }
+  
+  if (confirm(`"${cat.label}" yo'nalishini o'chirilsinmi?`)) {
+    delete sectionMeta[key];
+    saveSectionMeta();
+    renderCategories();
+    updateCategorySelect();
+    toast(`"${cat.label}" o'chirildi`);
+  }
+}
+
+function updateCategorySelect() {
+  const select = document.getElementById('new-section');
+  const currentValue = select.value;
+  select.innerHTML = Object.keys(sectionMeta).map(key => 
+    `<option value="${key}">${sectionMeta[key].label}</option>`
+  ).join('');
+  if (sectionMeta[currentValue]) {
+    select.value = currentValue;
+  }
+}
+
 // Init
 renderAdminBooks(books);
+renderCategories();
 updateStats();

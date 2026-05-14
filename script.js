@@ -1,9 +1,9 @@
-const sectionMeta = {
-  yurisprudensiya: { label: 'Yurisprudensiya', color: '#1a5c35', bg: '#1a5c35' },
-  iqtisodiyot: { label: 'Iqtisodiyot', color: '#1a4a6b', bg: '#1a4a6b' },
-  tarix: { label: 'Tarix', color: '#5a3a80', bg: '#5a3a80' },
-  osimliklar: { label: "O'simliklar Himoyasi va Karantini", color: '#2d8a4e', bg: '#2d8a4e' },
-  psixologiya: { label: 'Psixologiya', color: '#8b4513', bg: '#8b4513' },
+let sectionMeta = JSON.parse(localStorage.getItem('librarySectionMeta')) || {
+  yurisprudensiya: { label: 'Yurisprudensiya', icon: '⚖️', color: '#1a5c35', bg: '#1a5c35' },
+  iqtisodiyot: { label: 'Iqtisodiyot', icon: '📈', color: '#1a4a6b', bg: '#1a4a6b' },
+  tarix: { label: 'Tarix', icon: '📜', color: '#5a3a80', bg: '#5a3a80' },
+  osimliklar: { label: "O'simliklar Himoyasi va Karantini", icon: '🌿', color: '#2d8a4e', bg: '#2d8a4e' },
+  psixologiya: { label: 'Psixologiya', icon: '🧠', color: '#8b4513', bg: '#8b4513' },
 };
 
 // Load books from localStorage or use default
@@ -24,6 +24,7 @@ let nextId = parseInt(localStorage.getItem('libraryNextId')) || 11;
 let currentFilter = 'all';
 let uploadedFiles = JSON.parse(localStorage.getItem('libraryFiles')) || {};
 let uploadedImages = JSON.parse(localStorage.getItem('libraryImages')) || {};
+let currentBookId = null;
 
 function renderBooks(list) {
   const grid = document.getElementById('books-grid');
@@ -40,7 +41,7 @@ function renderBooks(list) {
     const s = sectionMeta[b.section];
     const hasFile = uploadedFiles[b.id] ? true : (b.fileName ? true : false);
     const hasImage = uploadedImages[b.id] ? true : (b.coverImage ? true : false);
-    return `<div class="book-card">
+    return `<div class="book-card" onclick="showBookModal(${b.id})">
       <div class="book-cover" style="background:${s.bg}">
         ${hasImage ? `<img src="${uploadedImages[b.id] || b.coverImage}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:2;border-radius:0">` : `<span>${b.title}</span>`}
       </div>
@@ -148,8 +149,101 @@ function downloadBook(id) {
   }
 }
 
+function showBookModal(bookId) {
+  const book = books.find(b => b.id === bookId);
+  if (!book) return;
+  
+  currentBookId = bookId;
+  const section = sectionMeta[book.section];
+  const hasFile = uploadedFiles[bookId] ? true : (book.fileName ? true : false);
+  const hasImage = uploadedImages[bookId] ? true : (book.coverImage ? true : false);
+  
+  // Populate modal content
+  document.getElementById('modal-title').textContent = book.title;
+  document.getElementById('modal-author').textContent = book.author;
+  document.getElementById('modal-section').textContent = section.label;
+  document.getElementById('modal-isbn').textContent = book.isbn;
+  document.getElementById('modal-year').textContent = book.year;
+  document.getElementById('modal-status').textContent = book.available ? 'Mavjud' : 'Topshirilgan';
+  
+  // Set cover image
+  const coverEl = document.getElementById('modal-cover-image');
+  if (hasImage) {
+    coverEl.innerHTML = `<img src="${uploadedImages[bookId] || book.coverImage}" />`;
+  } else {
+    coverEl.innerHTML = `<span>${book.title}</span>`;
+    coverEl.style.background = `linear-gradient(135deg, ${section.color} 0%, ${section.bg} 100%)`;
+  }
+  
+  // Show/hide download button
+  const downloadBtn = document.getElementById('modal-download-btn');
+  if (hasFile) {
+    downloadBtn.style.display = 'block';
+  } else {
+    downloadBtn.style.display = 'none';
+  }
+  
+  // Show modal
+  document.getElementById('book-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBookModal() {
+  document.getElementById('book-modal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+  currentBookId = null;
+}
+
+function downloadBookFromModal() {
+  if (currentBookId) {
+    downloadBook(currentBookId);
+  }
+}
+
+function renderSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const sectionItems = Array.from(sidebar.querySelectorAll('.sidebar-item')).slice(2); // Get all section items
+  const firstDivider = sidebar.querySelector('.sidebar-divider');
+  
+  if (!firstDivider) return;
+  
+  // Build the sidebar HTML
+  let html = `
+    <div class="sidebar-label">Ko'rish</div>
+    <div class="sidebar-item active" onclick="filterBooks('all', this)">
+      <span class="sidebar-dot" style="background:#888"></span> Barcha Kitoblar
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Yo'nalishlar</div>
+  `;
+  
+  // Add dynamic category items
+  Object.keys(sectionMeta).forEach(key => {
+    const cat = sectionMeta[key];
+    html += `
+      <div class="sidebar-item" onclick="filterBooks('${key}', this)">
+        <span style="font-size:1rem;width:20px;text-align:center">${cat.icon}</span> ${cat.label}
+      </div>
+    `;
+  });
+  
+  html += `
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Holat</div>
+    <div class="sidebar-item" onclick="filterBooks('available', this)">
+      <span class="sidebar-dot" style="background:#2d6a3f"></span> Mavjud
+    </div>
+    <div class="sidebar-item" onclick="filterBooks('checked', this)">
+      <span class="sidebar-dot" style="background:#b8922a"></span> Topshirilgan
+    </div>
+  `;
+  
+  sidebar.innerHTML = html;
+}
+
 // Init: show all books section overview on load
 document.getElementById('sections-overview').style.display = 'block';
 document.getElementById('current-section-heading').style.display = 'none';
+renderSidebar();
 renderBooks(books);
 updateLibraryStats();

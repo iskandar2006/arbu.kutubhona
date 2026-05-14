@@ -39,6 +39,9 @@
     <div class="admin-nav-item" onclick="showAdminSub('add', this)">
       <span class="admin-nav-icon">➕</span> Yangi Kitob Qo'shish
     </div>
+    <div class="admin-nav-item" onclick="showAdminSub('categories', this)">
+      <span class="admin-nav-icon">🏷️</span> Yo'nalishlar
+    </div>
   </aside>
 
   <!-- Admin main -->
@@ -85,6 +88,41 @@
           </thead>
           <tbody id="admin-books-tbody"></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Manage Categories -->
+    <div id="admin-categories" class="admin-sub">
+      <div class="admin-page-title">🏷️ Yo'nalishlar Boshqarish</div>
+      <div class="admin-panel">
+        <div class="admin-panel-header">
+          <div class="admin-panel-title">Barcha Yo'nalishlar</div>
+          <button class="btn-sm primary" onclick="showAddCategoryForm()" style="font-size:0.82rem">+ Yangi Yo'nalish</button>
+        </div>
+        <table class="admin-table">
+          <thead>
+            <tr><th>Nomi</th><th>Ikonka</th><th>Kitoblar Soni</th><th>Amallar</th></tr>
+          </thead>
+          <tbody id="admin-categories-tbody"></tbody>
+        </table>
+      </div>
+      <!-- Add/Edit Category Form -->
+      <div id="category-form-panel" class="admin-panel" style="display:none;margin-top:2rem">
+        <div class="admin-panel-header"><div class="admin-panel-title">Yo'nalish Ma'lumotlari</div></div>
+        <div class="add-book-form">
+          <div class="form-group">
+            <label>Nomi</label>
+            <input type="text" id="cat-name" placeholder="Yo'nalish nomi">
+          </div>
+          <div class="form-group">
+            <label>Ikonka (emoji yoki simvol)</label>
+            <input type="text" id="cat-icon" placeholder="Masalan: 📚 yoki 🏛️" maxlength="2">
+          </div>
+          <div class="form-actions">
+            <button class="btn-sm" onclick="hideCategoryForm()">Bekor qilish</button>
+            <button class="btn-sm primary" onclick="saveCategoryForm()" id="save-cat-btn">Saqlash</button>
+          </div>
+        </div>
       </div>
     </div>
 
